@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es" data-bs-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0b3b24">
+  <title>Cafetería UTNA | PWA</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="icon" type="image/png" href="icons/icon-192.png">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- Pantalla de Carga (Splash Screen - Objetivo 4) -->
+  <div id="splash-screen">
+    <div class="text-center text-white">
+      <img src="icons/icon-192.png" alt="Logo UTNA" width="80" class="mb-3 rounded-4 shadow">
+      <h3 class="fw-bold">Cafetería UTNA</h3>
+      <div class="spinner-border text-warning spinner-border-sm mt-2" role="status"></div>
+      <p class="small text-light mt-2">Iniciando entorno progresivo...</p>
+    </div>
+  </div>
+
+  <!-- Banner de Estado de Conexión (Objetivo 6) -->
+  <div id="network-banner" class="alert alert-success text-center mb-0 py-1 rounded-0 fw-semibold small" role="alert">
+    🟢 Conectado en línea — Base de datos sincronizada
+  </div>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-dark bg-utna sticky-top shadow">
+    <div class="container">
+      <span class="navbar-brand fw-bold d-flex align-items-center gap-2">
+        <img src="icons/icon-192.png" width="30" height="30" class="rounded" alt="Icon">
+        Cafetería UTNA
+      </span>
+      <div class="d-flex gap-2">
+        <button id="btn-install" class="btn btn-warning btn-sm fw-bold d-none">📲 Instalar App</button>
+        <button id="btn-update" class="btn btn-info btn-sm fw-bold d-none">🔄 Actualizar v2</button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container my-4">
+    <!-- Widget API Externa: Open-Meteo Clima Aguascalientes (15% Rúbrica) -->
+    <div class="card border-secondary shadow-sm mb-4">
+      <div class="card-body d-flex justify-content-between align-items-center flex-wrap">
+        <div>
+          <span class="text-uppercase text-muted small fw-bold">API Externa • Campus Rincón de Romos, Ags.</span>
+          <h4 id="weather-temp" class="mb-0 fw-bold text-white">Consultando clima...</h4>
+        </div>
+        <span id="weather-rec" class="badge bg-success fs-6 mt-2 mt-md-0">Cargando sugerencia...</span>
+      </div>
+    </div>
+
+    <div class="row g-4">
+      <!-- Catálogo desde Supabase / IndexedDB -->
+      <div class="col-lg-7">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h4 class="fw-bold mb-0">Menú Disponible</h4>
+          <span id="data-source-badge" class="badge bg-primary">Fuente: Nube</span>
+        </div>
+        <div id="menu-container" class="row g-3"></div>
+      </div>
+
+      <!-- Carrito y Pedido -->
+      <div class="col-lg-5">
+        <div class="card border-secondary shadow-sm">
+          <div class="card-header bg-utna text-white fw-bold">
+            🛒 Tu Pedido Express
+          </div>
+          <div class="card-body">
+            <ul id="cart-list" class="list-group list-group-flush mb-3">
+              <li class="list-group-item text-muted text-center">Selecciona productos del menú</li>
+            </ul>
+            <div class="d-flex justify-content-between fw-bold fs-5 mb-3">
+              <span>Total a pagar:</span>
+              <span id="cart-total" class="text-warning">$0.00</span>
+            </div>
+
+            <form id="order-form">
+              <div class="mb-2">
+                <input type="text" id="cliente-nombre" class="form-control" placeholder="Nombre del alumno/docente" required>
+              </div>
+              <div class="mb-3">
+                <input type="text" id="cliente-matricula" class="form-control" placeholder="Matrícula UTNA (ej. 230145)" required>
+              </div>
+              <button type="submit" class="btn btn-success w-100 fw-bold">Enviar Pedido</button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Historial y Cola Offline -->
+        <div class="card border-secondary shadow-sm mt-4">
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <span class="fw-bold">📋 Últimos Pedidos</span>
+            <span id="pending-badge" class="badge bg-warning text-dark d-none">0 en cola offline</span>
+          </div>
+          <div class="card-body p-0">
+            <ul id="orders-history" class="list-group list-group-flush small"></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/db.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
